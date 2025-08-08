@@ -9,7 +9,45 @@
     /* Added new color for the distraction message */
     --distraction-color: linear-gradient(45deg, #f3ec78, #af4261);
 }
+/* --- Header and Navigation Styles --- */
+header {
+    width: 100%;
+    position: absolute; /* Keeps it at the top of the viewport */
+    top: 0;
+    left: 0;
+    
+    display: flex; /* Arranges logo and nav side-by-side */
+    justify-content: space-between; /* Pushes logo to the left and nav to the right */
+    align-items: center; /* Vertically aligns items in the middle */
+    
+    padding: 20px 40px; /* Adds space inside the header (top/bottom, left/right) */
+    box-sizing: border-box; /* Ensures padding doesn't add to the total width */
+}
 
+.logo {
+    font-size: 1.2rem;
+    font-weight: 700; /* Makes the logo text bold */
+    color: #333;
+}
+
+nav ul {
+    list-style: none; /* Removes the default bullet points */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Makes list items appear in a row */
+    gap: 30px; /* Creates space between the navigation links */
+}
+
+nav a {
+    text-decoration: none; /* Removes the underline from links */
+    color: #aaa; /* A subtle, light gray color */
+    font-weight: 500;
+    transition: color 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+nav a:hover {
+    color: #333; /* Darkens the link color on hover */
+}
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--primary-bg);
