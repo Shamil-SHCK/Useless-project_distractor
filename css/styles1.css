@@ -31,7 +31,7 @@ body {
 /* --- 2. Header and Navigation Styles --- */
 header {
     width: 100%;
-    position: absolute;
+    position: fixed; /* 'fixed' is correct for a sticky header */
     top: 0;
     left: 0;
     display: flex;
@@ -39,10 +39,11 @@ header {
     align-items: center;
     padding: 20px 40px;
     box-sizing: border-box;
-    background-color: rgba(234, 228, 228, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-color);
+    background-color: beige;
+    box-shadow: 3px 3px 8px rgb(223, 223, 163);
+    z-index: 100; /* Add z-index to ensure it stays on top */
 }
+
 
 .logo {
     font-size: 1.2rem;

@@ -11,18 +11,18 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--primary-bg);
+    background: linear-gradient(beige, rgb(199, 242, 216));
     color: var(--text-color);
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+    display: flex; /* This is good */
+    flex-direction: column; /* This is good */
+    align-items: center; /* This is good for centering content horizontally */
+    min-height: 100vh; /* Use min-height instead of height to allow content to grow */
     text-align: center;
-    overflow: hidden;
-    height: 100vh;
+    /* REMOVED: justify-content: center; */
+    /* REMOVED: overflow: hidden; */
 }
+
 
 .container {
     width: 90%;
@@ -32,7 +32,7 @@ body {
 /* --- 2. Header and Navigation Styles --- */
 header {
     width: 100%;
-    position: absolute;
+    position: fixed; /* 'fixed' is correct for a sticky header */
     top: 0;
     left: 0;
     display: flex;
@@ -42,9 +42,13 @@ header {
     box-sizing: border-box;
     background-color: beige;
     box-shadow: 3px 3px 8px rgb(223, 223, 163);
-    position: fixed;
+    z-index: 100; /* Add z-index to ensure it stays on top */
 }
 
+/* ADD THIS NEW RULE to push content down below the fixed header */
+main.container {
+    padding-top: 100px; /* Adjust this value as needed */
+}
 .logo {
     font-size: 1.2rem;
     color: var(--text-color);
@@ -160,6 +164,13 @@ h1, .logo, #countdown, #distraction-message {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
+}
+#setup{
+    border: 5px double rgba(39, 219, 138, 0.842);
+    background-color: rgb(249, 248, 247);
+    margin: 40px 10px;
+    border-radius: 18px;
+    padding: 20px;
 }
 
 /* --- 5. Utility Class --- */
