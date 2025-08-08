@@ -37,6 +37,9 @@ header {
     top: 0;
     left: 0;
     box-sizing: border-box;
+    background-color: beige;
+    box-shadow: 3px 3px 10px rgb(212, 212, 142);
+
 }
 
 .logo {
