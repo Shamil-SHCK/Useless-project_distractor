@@ -104,7 +104,7 @@ startBtn.addEventListener('click', () => {
     timerContainerDiv.classList.remove('hidden');
 
     // Split the logic based on the initial duration
-    if (originalSeconds > 20) {
+    if (originalSeconds > 30){
         // Use the complex logic for long timers
         complexUpdateTimer(); // Call once immediately
         timerInterval = setInterval(complexUpdateTimer, 1000);
