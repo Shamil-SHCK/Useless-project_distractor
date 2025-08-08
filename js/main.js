@@ -75,7 +75,7 @@ function triggerFinalRedirect() {
         const randomIndex = Math.floor(Math.random() * distractionUrls.length);
         const randomUrl = distractionUrls[randomIndex];
         window.location.href = randomUrl;
-    }, 2500);
+    }, 100);
 }
 
 
