@@ -64,6 +64,11 @@ nav a {
     font-weight: 500;
     transition: color 0.3s ease;
 }
+nav a.active {
+    color: var(--text-color);
+    font-weight: 700;
+    transition: 1000ms ease-in-out;
+}
 
 nav a:hover {
     color: var(--text-color);
@@ -79,7 +84,7 @@ h1 {
     font-size: 1.2rem;
     color: var(--subtle-gray);
     margin-bottom: 3rem;
-    max-width: 450px;
+    max-width: 650px;
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
@@ -160,4 +165,24 @@ h1, .logo, #countdown, #distraction-message {
 /* --- 5. Utility Class --- */
 .hidden {
     display: none;
+}
+/* --- 7. Footer Styles --- */
+.site-footer {
+    width: 100%;
+    background-color: var(--card-bg); /* Uses a light grey from your existing theme */
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 1rem;
+    margin-top: 4rem; /* Adds some space between the main content and the footer */
+    text-align: center;
+    color: var(--text-secondary); /* A subtle secondary text color */
+    font-size: 0.9rem; /* Small text as requested */
+    line-height: 1.5;
+}
+
+.site-footer p {
+    margin: 0.5rem 0; /* Adds a little space between the lines of text */
+}
+
+.site-footer strong {
+    color: var(--text-primary); /* Makes the names stand out slightly */
 }
