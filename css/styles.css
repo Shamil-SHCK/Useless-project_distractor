@@ -6,48 +6,9 @@
     --accent-hover: #2980b9;
     --subtle-gray: #aaa;
     --border-color: #e0e0e0;
-    /* Added new color for the distraction message */
     --distraction-color: linear-gradient(45deg, #f3ec78, #af4261);
 }
-/* --- Header and Navigation Styles --- */
-header {
-    width: 100%;
-    position: absolute; /* Keeps it at the top of the viewport */
-    top: 0;
-    left: 0;
-    
-    display: flex; /* Arranges logo and nav side-by-side */
-    justify-content: space-between; /* Pushes logo to the left and nav to the right */
-    align-items: center; /* Vertically aligns items in the middle */
-    
-    padding: 20px 40px; /* Adds space inside the header (top/bottom, left/right) */
-    box-sizing: border-box; /* Ensures padding doesn't add to the total width */
-}
 
-.logo {
-    font-size: 1.2rem;
-    font-weight: 700; /* Makes the logo text bold */
-    color: #333;
-}
-
-nav ul {
-    list-style: none; /* Removes the default bullet points */
-    margin: 0;
-    padding: 0;
-    display: flex; /* Makes list items appear in a row */
-    gap: 30px; /* Creates space between the navigation links */
-}
-
-nav a {
-    text-decoration: none; /* Removes the underline from links */
-    color: #aaa; /* A subtle, light gray color */
-    font-weight: 500;
-    transition: color 0.3s ease; /* Smooth transition for the hover effect */
-}
-
-nav a:hover {
-    color: #333; /* Darkens the link color on hover */
-}
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--primary-bg);
@@ -59,13 +20,115 @@ body {
     justify-content: center;
     min-height: 100vh;
     text-align: center;
-    overflow: hidden; /* Prevents layout shifts from large text */
+    overflow: hidden;
+    height: 100vh;
 }
 
-/* ... (keep all other styles from body to #message the same) ... */
+.container {
+    width: 90%;
+    max-width: 600px;
+}
 
+/* --- 2. Header and Navigation Styles --- */
+header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    background-color: beige;
+    box-shadow: 3px 3px 8px rgb(223, 223, 163);
+    position: fixed;
+}
+
+.logo {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--subtle-gray);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--text-color);
+}
+
+/* --- 3. Main Content & Setup Screen --- */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.sub-headline {
+    font-size: 1.2rem;
+    color: var(--subtle-gray);
+    margin-bottom: 3rem;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.timer-input {
+    margin-bottom: 1.5rem;
+}
+
+.timer-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+#seconds-input {
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+#seconds-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+#startBtn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#startBtn:hover {
+    background-color: var(--accent-hover);
+}
+
+/* --- 4. Active Timer & Distraction Message --- */
 h1, .logo, #countdown, #distraction-message {
-    font-weight: 900; /* Bolder font weight for key text */
+    font-weight: 900;
 }
 
 #countdown {
@@ -80,10 +143,8 @@ h1, .logo, #countdown, #distraction-message {
     height: 20px;
 }
 
-/* --- New Styles for the Distraction Message --- */
 #distraction-message {
     font-size: 3.5rem;
-    font-weight: 900;
     background: var(--distraction-color);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -96,6 +157,7 @@ h1, .logo, #countdown, #distraction-message {
     100% { transform: scale(1); }
 }
 
+/* --- 5. Utility Class --- */
 .hidden {
     display: none;
 }

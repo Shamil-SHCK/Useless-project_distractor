@@ -6,7 +6,6 @@ const secondsInput = document.getElementById('seconds-input');
 const countdownDisplay = document.getElementById('countdown');
 const messageDisplay = document.getElementById('message');
 const alarmSound = document.getElementById('alarm-sound');
-// Get the new distraction message element
 const distractionMessage = document.getElementById('distraction-message');
 
 // --- 2. GLOBAL VARIABLES ---
@@ -26,21 +25,22 @@ const distractionUrls = [
 
 // --- 3. CORE FUNCTIONS ---
 
-// This function will run for all timers
-function updateTimer() {
+// Timer logic for durations > 20 seconds
+function complexUpdateTimer() {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
-    // For long timers, check for periodic distraction
-    if (originalSeconds > 20) {
-        const elapsedSeconds = originalSeconds - totalSeconds;
-        if (elapsedSeconds > 0 && elapsedSeconds % 20 === 0) {
-            flashDistractionMessage();
-        }
+    updateMessage();
+
+    const elapsedSeconds = originalSeconds - totalSeconds;
+    // Check for periodic redirect
+    if (elapsedSeconds > 0 && elapsedSeconds % 20 === 0) {
+        clearInterval(timerInterval); // Stop the timer
+        triggerFinalRedirect(); // Fire the redirect sequence
+        return; // Exit the function
     }
 
-    // Check if the main timer has finished
+    // Check for final redirect if no periodic redirect happened
     if (totalSeconds < 0) {
         clearInterval(timerInterval);
         triggerFinalRedirect();
@@ -49,19 +49,23 @@ function updateTimer() {
     }
 }
 
-// Shows the message temporarily, then hides it.
-function flashDistractionMessage() {
-    alarmSound.play();
-    distractionMessage.classList.remove('hidden');
-    // Hide the message again after 2 seconds
-    setTimeout(() => {
-        distractionMessage.classList.add('hidden');
-    }, 2000);
+// Timer logic for durations <= 20 seconds
+function simpleUpdateTimer() {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    updateMessage();
+
+    if (totalSeconds < 0) {
+        clearInterval(timerInterval);
+        triggerFinalRedirect();
+    } else {
+        totalSeconds--;
+    }
 }
 
-// Shows the message permanently, then redirects the page.
+// Shows the final message, then redirects the page.
 function triggerFinalRedirect() {
-    // Hide the timer UI and show the message
     timerContainerDiv.classList.add('hidden');
     distractionMessage.classList.remove('hidden');
     alarmSound.play();
@@ -72,6 +76,18 @@ function triggerFinalRedirect() {
         const randomUrl = distractionUrls[randomIndex];
         window.location.href = randomUrl;
     }, 2500);
+}
+
+
+function updateMessage() {
+    const percentageLeft = (totalSeconds / originalSeconds) * 100;
+    if (percentageLeft > 66) {
+        messageDisplay.textContent = "You're doing great. Total concentration.";
+    } else if (percentageLeft > 10) {
+        messageDisplay.textContent = "Is that social media calling your name? Lets enjoy it .";
+    } else {
+        messageDisplay.textContent = "Almost there. Prepare for... your Failure.";
+    }
 }
 
 // --- 4. EVENT LISTENER ---
@@ -87,7 +103,14 @@ startBtn.addEventListener('click', () => {
     setupDiv.classList.add('hidden');
     timerContainerDiv.classList.remove('hidden');
 
-    // Start the single, unified timer
-    updateTimer(); // Call once immediately
-    timerInterval = setInterval(updateTimer, 1000);
+    // Split the logic based on the initial duration
+    if (originalSeconds > 20) {
+        // Use the complex logic for long timers
+        complexUpdateTimer(); // Call once immediately
+        timerInterval = setInterval(complexUpdateTimer, 1000);
+    } else {
+        // Use the simple logic for short timers
+        simpleUpdateTimer(); // Call once immediately
+        timerInterval = setInterval(simpleUpdateTimer, 1000);
+    }
 });
