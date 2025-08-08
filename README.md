@@ -49,7 +49,7 @@ For Software:
 *The final "Here You Fail...." message, displayed moments before the user is redirected.*
 
 # Diagrams
-```mermaid
+```mermaid```
 graph TD;
     A[Start: User lands on the site] --> B{Enters a time and clicks "Start"};
     B --> C{Is time > 30 seconds?};
