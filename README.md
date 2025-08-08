@@ -50,21 +50,7 @@ For Software:
 
 # Diagrams
 ```mermaid```
-graph TD;
-    A[Start: User lands on the site] --> B{Enters a time and clicks "Start"};
-    B --> C{Is time > 30 seconds?};
-    C -- No --> D[Simple Timer Starts];
-    C -- Yes --> E[Complex Timer Starts];
-    D --> F{Timer counts down to 0};
-    E --> G{Timer counts down};
-    G --> H{Has 30 seconds passed?};
-    H -- No --> G;
-    H -- Yes --> I[Stop Timer & Trigger Redirect];
-    F --> I;
-    I --> J[Show "Here You Fail..." message];
-    J --> K[Wait for 1 second];
-    K --> L[Redirect to Random Website];
-    L --> M[End of Journey];
+![Workflow](images/image.png)
 *A simple diagram illustrating the user's journey from focus to failure.*
 
 
