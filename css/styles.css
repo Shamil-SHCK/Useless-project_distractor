@@ -6,6 +6,8 @@
     --accent-hover: #2980b9;
     --subtle-gray: #aaa;
     --border-color: #e0e0e0;
+    --danger-color: #e74c3c;
+    --danger-hover: #c0392b;
 }
 
 body {
@@ -37,9 +39,6 @@ header {
     top: 0;
     left: 0;
     box-sizing: border-box;
-    background-color: beige;
-    box-shadow: 3px 3px 10px rgb(212, 212, 142);
-
 }
 
 .logo {
@@ -130,6 +129,25 @@ h1 {
     margin-top: 1rem;
     height: 20px; /* Reserve space to prevent layout shift */
 }
+
+/* --- New Button Style --- */
+#redirectBtn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 20px;
+}
+
+#redirectBtn:hover {
+    background-color: var(--danger-hover);
+}
+
 
 /* --- 5. Utility Class --- */
 .hidden {

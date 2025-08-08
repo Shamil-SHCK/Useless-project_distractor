@@ -6,44 +6,40 @@ const minutesInput = document.getElementById('minutes-input');
 const countdownDisplay = document.getElementById('countdown');
 const messageDisplay = document.getElementById('message');
 const alarmSound = document.getElementById('alarm-sound');
+const redirectBtn = document.getElementById('redirectBtn'); // Get the new button
 
 // --- 2. GLOBAL VARIABLES ---
-let timerInterval; // Will hold the setInterval function
+let timerInterval;
 let totalSeconds;
 let originalMinutes;
 
-// The heart of the sabotage! Using the new list of sites.
 const distractionUrls = [
-    'https://www.youtube.com/shorts/axhb24mTWoY',
+    'https://www.youtube.com',
     'https://www.instagram.com',
+    'https://www.facebook.com',
     'https://www.spotify.com',
+    'https://www.pinterest.com',
     'https://www.reddit.com',
-    'https://x.com/fabrizioromano'
+    'https://www.x.com'
 ];
 
-// --- 3. TIMER LOGIC ---
+// --- 3. CORE FUNCTIONS ---
 function updateTimer() {
-    // Calculate minutes and seconds from totalSeconds
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     
-    // Format time with leading zeros
     countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     
-    // Update motivational message based on progress
     updateMessage();
 
-    // Check if the timer has finished
     if (totalSeconds <= 0) {
         clearInterval(timerInterval);
-        countdownDisplay.textContent = "STOP!";
+        countdownDisplay.textContent = "DONE!";
+        messageDisplay.textContent = "Your moment of chaos has arrived.";
         alarmSound.play();
         
-        // Open a random distracting website
-        redirectToRandomSite();
-
-        // Reset the UI after a short delay
-        setTimeout(resetUI, 2000);
+        // Show the redirect button instead of opening a window automatically
+        redirectBtn.classList.remove('hidden');
     } else {
         totalSeconds--;
     }
@@ -67,17 +63,16 @@ function redirectToRandomSite() {
 }
 
 function resetUI() {
-    // Switch visibility back to the setup screen
     timerContainerDiv.classList.add('hidden');
+    redirectBtn.classList.add('hidden'); // Also hide the redirect button
     setupDiv.classList.remove('hidden');
-    messageDisplay.textContent = ""; // Clear the message
+    messageDisplay.textContent = "";
 }
 
-// --- 4. EVENT LISTENER ---
+// --- 4. EVENT LISTENERS ---
 startBtn.addEventListener('click', () => {
     originalMinutes = parseInt(minutesInput.value);
 
-    // Basic validation
     if (isNaN(originalMinutes) || originalMinutes <= 0) {
         alert("Please enter a valid number of minutes.");
         return;
@@ -85,11 +80,15 @@ startBtn.addEventListener('click', () => {
 
     totalSeconds = originalMinutes * 60;
 
-    // Switch UI visibility
     setupDiv.classList.add('hidden');
     timerContainerDiv.classList.remove('hidden');
 
-    // Start the countdown
-    updateTimer(); // Call once immediately to show the initial time
+    updateTimer();
     timerInterval = setInterval(updateTimer, 1000);
+});
+
+// New listener for the redirect button
+redirectBtn.addEventListener('click', () => {
+    redirectToRandomSite(); // This is now a direct user action and will not be blocked
+    resetUI(); // Reset the app after the user claims their distraction
 });
