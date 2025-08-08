@@ -1,18 +1,156 @@
-/* css/styles.css (add these new rules at the end) */
+/* --- 1. General Styling & CSS Variables --- */
+:root {
+    --primary-bg: #fdfdfd;
+    --text-color: #333;
+    --accent-color: #3498db;
+    --accent-hover: #2980b9;
+    --subtle-gray: #aaa;
+    --border-color: #e0e0e0;
+    --distraction-color: linear-gradient(45deg, #f3ec78, #af4261);
+}
 
-/* --- 6. Content Page Styles --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+}
+
+/* --- 2. Header and Navigation Styles --- */
+header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    background-color: rgba(253, 253, 253, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--text-color);
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--subtle-gray);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--text-color);
+}
+
+nav a.active {
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+/* --- 3. Main Content, Timer & Messages --- */
+/* Styles for the main timer page (index.html) */
+#setup h1, .content-page h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+.sub-headline {
+    font-size: 1.2rem;
+    color: var(--subtle-gray);
+    margin-bottom: 3rem;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+#seconds-input {
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+#seconds-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+#startBtn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#startBtn:hover {
+    background-color: var(--accent-hover);
+}
+
+#countdown {
+    font-size: 7rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+#distraction-message {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: var(--distraction-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* --- 4. Content Page Styles (Philosophy, Science, Pricing) --- */
 .content-page {
-    padding: 120px 20px 60px 20px; /* Padding top to clear the header */
+    padding: 120px 20px 60px 20px;
     max-width: 800px;
     margin: 0 auto;
     text-align: left;
     line-height: 1.7;
-}
-
-.content-page h1 {
-    font-size: 2.8rem;
-    text-align: center;
-    margin-bottom: 2rem;
 }
 
 .content-page p {
@@ -38,17 +176,13 @@
     color: var(--text-color);
 }
 
-nav a.active {
-    color: var(--text-color);
-    font-weight: 700;
-}
-
-/* --- 7. Pricing Table Styles --- */
+/* --- 5. Pricing Table Styles --- */
 .pricing-table {
     width: 100%;
     border-collapse: collapse;
     margin: 3rem 0;
     text-align: center;
+    font-size: 1.05rem;
 }
 
 .pricing-table th, .pricing-table td {
@@ -62,10 +196,6 @@ nav a.active {
     font-weight: 700;
 }
 
-.pricing-table td {
-    vertical-align: top;
-}
-
 .pricing-table .price {
     font-size: 2.5rem;
     font-weight: 900;
@@ -74,6 +204,7 @@ nav a.active {
 
 .pricing-table .per-month {
     color: var(--subtle-gray);
+    font-size: 0.9rem;
 }
 
 .pricing-button {
@@ -95,7 +226,7 @@ nav a.active {
 }
 
 .pricing-button.pro {
-    background-color: #27ae60; /* Highlight the 'Pro' option */
+    background-color: #27ae60;
 }
 .pricing-button.pro:hover {
     background-color: #229954;
@@ -116,4 +247,9 @@ nav a.active {
     margin-left: 0;
     color: #555;
     font-style: italic;
+}
+
+/* --- 6. Utility Class --- */
+.hidden {
+    display: none;
 }
