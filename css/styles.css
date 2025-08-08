@@ -77,6 +77,20 @@ nav a.active {
 nav a:hover {
     color: var(--text-color);
 }
+/* Add this to your css/styles1.css file */
+
+.nav-button {
+    background-color: rgb(65, 185, 225);
+    color: white !important; /* Use !important to override other link styles */
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.nav-button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
 
 /* --- 3. Main Content & Setup Screen --- */
 h1 {
