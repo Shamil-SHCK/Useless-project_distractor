@@ -2,16 +2,18 @@
 const setupDiv = document.getElementById('setup');
 const timerContainerDiv = document.getElementById('timer-container');
 const startBtn = document.getElementById('startBtn');
-const minutesInput = document.getElementById('minutes-input');
+// Changed to get the new input field
+const secondsInput = document.getElementById('seconds-input');
 const countdownDisplay = document.getElementById('countdown');
 const messageDisplay = document.getElementById('message');
 const alarmSound = document.getElementById('alarm-sound');
-const redirectBtn = document.getElementById('redirectBtn'); // Get the new button
+const redirectBtn = document.getElementById('redirectBtn');
 
 // --- 2. GLOBAL VARIABLES ---
 let timerInterval;
 let totalSeconds;
-let originalMinutes;
+// We now track the original seconds for the percentage calculation
+let originalSeconds; 
 
 const distractionUrls = [
     'https://www.youtube.com',
@@ -32,13 +34,12 @@ function updateTimer() {
     
     updateMessage();
 
-    if (totalSeconds <= 0) {
+    if (totalSeconds < 0) { // Changed to < 0 to ensure 00:00 is displayed
         clearInterval(timerInterval);
         countdownDisplay.textContent = "DONE!";
         messageDisplay.textContent = "Your moment of chaos has arrived.";
         alarmSound.play();
         
-        // Show the redirect button instead of opening a window automatically
         redirectBtn.classList.remove('hidden');
     } else {
         totalSeconds--;
@@ -46,7 +47,8 @@ function updateTimer() {
 }
 
 function updateMessage() {
-    const percentageLeft = (totalSeconds / (originalMinutes * 60)) * 100;
+    // Changed logic to use originalSeconds for percentage
+    const percentageLeft = (totalSeconds / originalSeconds) * 100;
     if (percentageLeft > 66) {
         messageDisplay.textContent = "You're doing great. Total concentration.";
     } else if (percentageLeft > 10) {
@@ -64,21 +66,23 @@ function redirectToRandomSite() {
 
 function resetUI() {
     timerContainerDiv.classList.add('hidden');
-    redirectBtn.classList.add('hidden'); // Also hide the redirect button
+    redirectBtn.classList.add('hidden');
     setupDiv.classList.remove('hidden');
     messageDisplay.textContent = "";
 }
 
 // --- 4. EVENT LISTENERS ---
 startBtn.addEventListener('click', () => {
-    originalMinutes = parseInt(minutesInput.value);
+    // We now read the value directly as seconds
+    originalSeconds = parseInt(secondsInput.value);
+    
+    // The totalSeconds is now the same as the input value
+    totalSeconds = originalSeconds;
 
-    if (isNaN(originalMinutes) || originalMinutes <= 0) {
-        alert("Please enter a valid number of minutes.");
+    if (isNaN(totalSeconds) || totalSeconds <= 0) {
+        alert("Please enter a valid number of seconds.");
         return;
     }
-
-    totalSeconds = originalMinutes * 60;
 
     setupDiv.classList.add('hidden');
     timerContainerDiv.classList.remove('hidden');
@@ -87,8 +91,7 @@ startBtn.addEventListener('click', () => {
     timerInterval = setInterval(updateTimer, 1000);
 });
 
-// New listener for the redirect button
 redirectBtn.addEventListener('click', () => {
-    redirectToRandomSite(); // This is now a direct user action and will not be blocked
-    resetUI(); // Reset the app after the user claims their distraction
+    redirectToRandomSite();
+    resetUI();
 });
