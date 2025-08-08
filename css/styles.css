@@ -1,0 +1,133 @@
+:root {
+            --primary-bg: #fdfdfd;
+            --text-color: #333;
+            --accent-color: #3498db;
+            --accent-hover: #2980b9;
+            --subtle-gray: #aaa;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        /* --- 2. Header and Navigation --- */
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--subtle-gray);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-color);
+        }
+        
+        /* --- 3. Main Content & Setup Screen --- */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub-headline {
+            font-size: 1.2rem;
+            color: var(--subtle-gray);
+            margin-bottom: 3rem;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .timer-input {
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        #minutes-input {
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+        }
+
+        #startBtn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #startBtn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        /* --- 4. Active Timer State --- */
+        #countdown {
+            font-size: 7rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        #message {
+            font-size: 1.1rem;
+            color: var(--subtle-gray);
+            margin-top: 1rem;
+            height: 20px; /* Reserve space to prevent layout shift */
+        }
+        
+        /* --- 5. Utility Class --- */
+        .hidden {
+            display: none;
+        }
