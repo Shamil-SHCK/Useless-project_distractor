@@ -1,0 +1,119 @@
+/* css/styles.css (add these new rules at the end) */
+
+/* --- 6. Content Page Styles --- */
+.content-page {
+    padding: 120px 20px 60px 20px; /* Padding top to clear the header */
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    line-height: 1.7;
+}
+
+.content-page h1 {
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.content-page p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.content-page blockquote {
+    border-left: 4px solid var(--accent-color);
+    margin: 2rem 0;
+    padding: 1rem 2rem;
+    background-color: #f9f9f9;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+.content-page blockquote footer {
+    margin-top: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+nav a.active {
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+/* --- 7. Pricing Table Styles --- */
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.pricing-table th, .pricing-table td {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.pricing-table th {
+    background-color: #f9f9f9;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.pricing-table td {
+    vertical-align: top;
+}
+
+.pricing-table .price {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 0;
+}
+
+.pricing-table .per-month {
+    color: var(--subtle-gray);
+}
+
+.pricing-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.pricing-button:hover {
+    background-color: var(--accent-hover);
+}
+
+.pricing-button.pro {
+    background-color: #27ae60; /* Highlight the 'Pro' option */
+}
+.pricing-button.pro:hover {
+    background-color: #229954;
+}
+
+.faq-list {
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.faq-list dt {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.faq-list dd {
+    margin-left: 0;
+    color: #555;
+    font-style: italic;
+}
