@@ -39,13 +39,13 @@ No installation is needed! This project runs directly in any modern web browser.
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](https://i.imgur.com/example1.png)
+![Screenshot1](images/home.png)
 *The clean, deceptive landing page where users set their "focus" time.*
 
-![Screenshot2](https://i.imgur.com/example2.png)
+![Screenshot2](images/timer.png)
 *The active timer, counting down and displaying a subtly discouraging message.*
 
-![Screenshot3](https://i.imgur.com/example3.png)
+![Screenshot3](images/here_you_fail.png)
 *The final "Here You Fail...." message, displayed moments before the user is redirected.*
 
 # Diagrams
