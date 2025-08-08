@@ -2,17 +2,14 @@
 const setupDiv = document.getElementById('setup');
 const timerContainerDiv = document.getElementById('timer-container');
 const startBtn = document.getElementById('startBtn');
-// Changed to get the new input field
 const secondsInput = document.getElementById('seconds-input');
 const countdownDisplay = document.getElementById('countdown');
 const messageDisplay = document.getElementById('message');
 const alarmSound = document.getElementById('alarm-sound');
-const redirectBtn = document.getElementById('redirectBtn');
 
 // --- 2. GLOBAL VARIABLES ---
 let timerInterval;
 let totalSeconds;
-// We now track the original seconds for the percentage calculation
 let originalSeconds; 
 
 const distractionUrls = [
@@ -26,28 +23,49 @@ const distractionUrls = [
 ];
 
 // --- 3. CORE FUNCTIONS ---
-function updateTimer() {
+
+// This function will run for timers 20 seconds or less
+function simpleUpdateTimer() {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    
     countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
     updateMessage();
 
-    if (totalSeconds < 0) { // Changed to < 0 to ensure 00:00 is displayed
+    if (totalSeconds < 0) {
         clearInterval(timerInterval);
-        countdownDisplay.textContent = "DONE!";
-        messageDisplay.textContent = "Your moment of chaos has arrived.";
         alarmSound.play();
-        
-        redirectBtn.classList.remove('hidden');
+        redirectToRandomSite(); 
     } else {
         totalSeconds--;
     }
 }
 
+// This function will run for timers longer than 20 seconds
+function complexUpdateTimer() {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    updateMessage();
+
+    // Check if 20 seconds have passed
+    const elapsedSeconds = originalSeconds - totalSeconds;
+    if (elapsedSeconds > 0 && elapsedSeconds % 20 === 0) {
+        // Play sound and redirect every 20 seconds
+        alarmSound.play();
+        redirectToRandomSite();
+    }
+
+    if (totalSeconds < 0) {
+        // When the main timer is done, just stop it.
+        clearInterval(timerInterval);
+        countdownDisplay.textContent = "DONE!";
+    } else {
+        totalSeconds--;
+    }
+}
+
+
 function updateMessage() {
-    // Changed logic to use originalSeconds for percentage
     const percentageLeft = (totalSeconds / originalSeconds) * 100;
     if (percentageLeft > 66) {
         messageDisplay.textContent = "You're doing great. Total concentration.";
@@ -61,22 +79,12 @@ function updateMessage() {
 function redirectToRandomSite() {
     const randomIndex = Math.floor(Math.random() * distractionUrls.length);
     const randomUrl = distractionUrls[randomIndex];
-    window.open(randomUrl, '_blank');
+    window.location.href = randomUrl;
 }
 
-function resetUI() {
-    timerContainerDiv.classList.add('hidden');
-    redirectBtn.classList.add('hidden');
-    setupDiv.classList.remove('hidden');
-    messageDisplay.textContent = "";
-}
-
-// --- 4. EVENT LISTENERS ---
+// --- 4. EVENT LISTENER ---
 startBtn.addEventListener('click', () => {
-    // We now read the value directly as seconds
     originalSeconds = parseInt(secondsInput.value);
-    
-    // The totalSeconds is now the same as the input value
     totalSeconds = originalSeconds;
 
     if (isNaN(totalSeconds) || totalSeconds <= 0) {
@@ -87,11 +95,19 @@ startBtn.addEventListener('click', () => {
     setupDiv.classList.add('hidden');
     timerContainerDiv.classList.remove('hidden');
 
-    updateTimer();
-    timerInterval = setInterval(updateTimer, 1000);
+    // --- KEY CHANGE: Logic splits here ---
+    if (originalSeconds > 20) {
+        // Use the complex logic for timers > 20s
+        updateTimer(complexUpdateTimer); // Initial call
+        timerInterval = setInterval(complexUpdateTimer, 1000);
+    } else {
+        // Use the simple logic for timers <= 20s
+        updateTimer(simpleUpdateTimer); // Initial call
+        timerInterval = setInterval(simpleUpdateTimer, 1000);
+    }
 });
 
-redirectBtn.addEventListener('click', () => {
-    redirectToRandomSite();
-    resetUI();
-});
+// A helper function to call the correct updater immediately
+function updateTimer(updaterFunction) {
+    updaterFunction();
+}
