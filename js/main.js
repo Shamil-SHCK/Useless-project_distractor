@@ -6,6 +6,8 @@ const secondsInput = document.getElementById('seconds-input');
 const countdownDisplay = document.getElementById('countdown');
 const messageDisplay = document.getElementById('message');
 const alarmSound = document.getElementById('alarm-sound');
+// Get the new distraction message element
+const distractionMessage = document.getElementById('distraction-message');
 
 // --- 2. GLOBAL VARIABLES ---
 let timerInterval;
@@ -24,62 +26,52 @@ const distractionUrls = [
 
 // --- 3. CORE FUNCTIONS ---
 
-// This function will run for timers 20 seconds or less
-function simpleUpdateTimer() {
+// This function will run for all timers
+function updateTimer() {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    updateMessage();
+    
+    // For long timers, check for periodic distraction
+    if (originalSeconds > 20) {
+        const elapsedSeconds = originalSeconds - totalSeconds;
+        if (elapsedSeconds > 0 && elapsedSeconds % 20 === 0) {
+            flashDistractionMessage();
+        }
+    }
 
+    // Check if the main timer has finished
     if (totalSeconds < 0) {
         clearInterval(timerInterval);
-        alarmSound.play();
-        redirectToRandomSite(); 
+        triggerFinalRedirect();
     } else {
         totalSeconds--;
     }
 }
 
-// This function will run for timers longer than 20 seconds
-function complexUpdateTimer() {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    updateMessage();
-
-    // Check if 20 seconds have passed
-    const elapsedSeconds = originalSeconds - totalSeconds;
-    if (elapsedSeconds > 0 && elapsedSeconds % 20 === 0) {
-        // Play sound and redirect every 20 seconds
-        alarmSound.play();
-        redirectToRandomSite();
-    }
-
-    if (totalSeconds < 0) {
-        // When the main timer is done, just stop it.
-        clearInterval(timerInterval);
-        countdownDisplay.textContent = "DONE!";
-    } else {
-        totalSeconds--;
-    }
+// Shows the message temporarily, then hides it.
+function flashDistractionMessage() {
+    alarmSound.play();
+    distractionMessage.classList.remove('hidden');
+    // Hide the message again after 2 seconds
+    setTimeout(() => {
+        distractionMessage.classList.add('hidden');
+    }, 2000);
 }
 
+// Shows the message permanently, then redirects the page.
+function triggerFinalRedirect() {
+    // Hide the timer UI and show the message
+    timerContainerDiv.classList.add('hidden');
+    distractionMessage.classList.remove('hidden');
+    alarmSound.play();
 
-function updateMessage() {
-    const percentageLeft = (totalSeconds / originalSeconds) * 100;
-    if (percentageLeft > 66) {
-        messageDisplay.textContent = "You're doing great. Total concentration.";
-    } else if (percentageLeft > 10) {
-        messageDisplay.textContent = "Is that social media calling your name? Ignore it.";
-    } else {
-        messageDisplay.textContent = "Almost there. Prepare for... your reward.";
-    }
-}
-
-function redirectToRandomSite() {
-    const randomIndex = Math.floor(Math.random() * distractionUrls.length);
-    const randomUrl = distractionUrls[randomIndex];
-    window.location.href = randomUrl;
+    // Wait 2.5 seconds before redirecting
+    setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * distractionUrls.length);
+        const randomUrl = distractionUrls[randomIndex];
+        window.location.href = randomUrl;
+    }, 2500);
 }
 
 // --- 4. EVENT LISTENER ---
@@ -95,19 +87,7 @@ startBtn.addEventListener('click', () => {
     setupDiv.classList.add('hidden');
     timerContainerDiv.classList.remove('hidden');
 
-    // --- KEY CHANGE: Logic splits here ---
-    if (originalSeconds > 20) {
-        // Use the complex logic for timers > 20s
-        updateTimer(complexUpdateTimer); // Initial call
-        timerInterval = setInterval(complexUpdateTimer, 1000);
-    } else {
-        // Use the simple logic for timers <= 20s
-        updateTimer(simpleUpdateTimer); // Initial call
-        timerInterval = setInterval(simpleUpdateTimer, 1000);
-    }
+    // Start the single, unified timer
+    updateTimer(); // Call once immediately
+    timerInterval = setInterval(updateTimer, 1000);
 });
-
-// A helper function to call the correct updater immediately
-function updateTimer(updaterFunction) {
-    updaterFunction();
-}
