@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procrasti-Timer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. General Styling & CSS Variables --- */
+        :root {
+            --primary-bg: #fdfdfd;
+            --text-color: #333;
+            --accent-color: #3498db;
+            --accent-hover: #2980b9;
+            --subtle-gray: #aaa;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        /* --- 2. Header and Navigation --- */
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--subtle-gray);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-color);
+        }
+        
+        /* --- 3. Main Content & Setup Screen --- */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub-headline {
+            font-size: 1.2rem;
+            color: var(--subtle-gray);
+            margin-bottom: 3rem;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .timer-input {
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        #minutes-input {
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+        }
+
+        #startBtn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #startBtn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        /* --- 4. Active Timer State --- */
+        #countdown {
+            font-size: 7rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        #message {
+            font-size: 1.1rem;
+            color: var(--subtle-gray);
+            margin-top: 1rem;
+            height: 20px; /* Reserve space to prevent layout shift */
+        }
+        
+        /* --- 5. Utility Class --- */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">⏳ Procrasti-Timer</div>
+        <nav>
+            <ul>
+                <li><a href="#">Our Philosophy</a></li>
+                <li><a href="#">Productivity Science</a></li>
+                <li><a href="#">Pricing</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="setup">
+            <h1>Achieve Deep Work. Effortlessly.</h1>
+            <p class="sub-headline">Reclaim your focus with our scientifically-designed distraction-blocking workflow.</p>
+            <div class="timer-input">
+                <label for="minutes-input">Set Focus Time (in minutes):</label>
+                <input type="number" id="minutes-input" value="25" min="1">
+            </div>
+            <button id="startBtn">START FOCUSING</button>
+        </div>
+
+        <div id="timer-container" class="hidden">
+            <div id="countdown">00:00</div>
+            <p id="message"></p>
+        </div>
+    </main>
+    
+    <audio id="alarm-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
+
+
+    <script>
+        // --- 1. GET DOM ELEMENTS ---
+        const setupDiv = document.getElementById('setup');
+        const timerContainerDiv = document.getElementById('timer-container');
+        const startBtn = document.getElementById('startBtn');
+        const minutesInput = document.getElementById('minutes-input');
+        const countdownDisplay = document.getElementById('countdown');
+        const messageDisplay = document.getElementById('message');
+        const alarmSound = document.getElementById('alarm-sound');
+
+        // --- 2. GLOBAL VARIABLES ---
+        let timerInterval; // Will hold the setInterval function
+        let totalSeconds;
+        let originalMinutes;
+
+        // The heart of the sabotage!
+        const distractionUrls = [
+          'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // A classic
+          'https://en.wikipedia.org/wiki/Special:Random',
+          'https://pointerpointer.com/',
+          'https://theuselessweb.com/',
+          'https://neal.fun/deep-sea/',
+          'https://cat-bounce.com/',
+          'https://longdogechallenge.com/'
+        ];
+
+        // --- 3. TIMER LOGIC ---
+        function updateTimer() {
+            // Calculate minutes and seconds from totalSeconds
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            
+            // Format time with leading zeros
+            countdownDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            // Update motivational message based on progress
+            updateMessage();
+
+            // Check if the timer has finished
+            if (totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                countdownDisplay.textContent = "STOP!";
+                alarmSound.play();
+                
+                // Open a random distracting website
+                const randomIndex = Math.floor(Math.random() * distractionUrls.length);
+                window.open(distractionUrls[randomIndex], '_blank');
+
+                // Reset the UI after a short delay
+                setTimeout(resetUI, 2000);
+            } else {
+                totalSeconds--;
+            }
+        }
+        
+        function updateMessage() {
+            const percentageLeft = (totalSeconds / (originalMinutes * 60)) * 100;
+            if (percentageLeft > 66) {
+                messageDisplay.textContent = "You're doing great. Total concentration.";
+            } else if (percentageLeft > 10) {
+                messageDisplay.textContent = "Is that social media calling your name? Ignore it.";
+            } else {
+                messageDisplay.textContent = "Almost there. Prepare for... your reward.";
+            }
+        }
+        
+        function resetUI() {
+            // Switch visibility back to the setup screen
+            timerContainerDiv.classList.add('hidden');
+            setupDiv.classList.remove('hidden');
+            messageDisplay.textContent = ""; // Clear the message
+        }
+
+        // --- 4. EVENT LISTENER ---
+        startBtn.addEventListener('click', () => {
+            originalMinutes = parseInt(minutesInput.value);
+
+            // Basic validation
+            if (isNaN(originalMinutes) || originalMinutes <= 0) {
+                alert("Please enter a valid number of minutes.");
+                return;
+            }
+
+            totalSeconds = originalMinutes * 60;
+
+            // Switch UI visibility
+            setupDiv.classList.add('hidden');
+            timerContainerDiv.classList.remove('hidden');
+
+            // Start the countdown
+            updateTimer(); // Call once immediately to show the initial time
+            timerInterval = setInterval(updateTimer, 1000);
+        });
+
+    </script>
+</body>
+</html>
